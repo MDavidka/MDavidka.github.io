@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Report a Problem</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			padding: 20px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 10px;
+		}
+
+		input[type="text"], textarea {
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 20px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+
+		button {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<h1>Report a Problem</h1>
+	<form id="report-form">
+		<label for="name">Name:</label>
+		<input type="text" id="name" name="name" required>
+
+		<label for="email">Email:</label>
+		<input type="text" id="email" name="email" required>
+
+		<label for="problem">Problem:</label>
+		<textarea id="problem" name="problem" required></textarea>
+<!--Ne adj meg jelszavakat, mivel a kitöltött dobozokban levő adatokat továbbítjuk a moderátoroknak-->
+<div style="background-color: #ffcccb; padding: 10px; border-radius: 4px; margin-bottom: 20px;">A kitöltött dobozokban levő adatokat továbbítjuk a moderátoroknak, kérjük, ne adj meg jelszavakat.</div>
+		<button 
+	type="submit">Submit</button>
+
+
+	
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
+<script>
+		const form = document.querySelector('#report-form');
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+
+			const name = form.elements.name.value;
+			const email = form.elements.email.value;
+			const problem = form.elements.problem.value;
+
+			const data = {
+				"username": "Problem Report",
+				"avatar_url": "https://www.google.com/search?q=warning+icon&oq=warning+icon&aqs=chrome..69i57j0i512l8.3226j0j4&sourceid=chrome-mobile&ie=UTF-8#imgrc=ffKnjaYavOPBhM&lnspr=W10=",
+				"content": `**Name:** ${name}\n**Email:** ${email}\n**Problem:** ${problem}`
+			};
+
+			try {
+				const response = await fetch('https://discord.com/api/webhooks/1088110323078287371/OaKB8BjKd7K7dgS86-od1E_vClHTDvTFmizNSeVqJAQtBcM02xiIZV0HDN1wohHaNGaR', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(data)
+				});
+
+				if (!response.ok) {
+					throw new Error('Failed to send problem report');
+				}
+
+				alert('Problem report submitted successfully!');
+				form.reset();
+			} catch (error) {
+				console.error(error);
+				alert('Failed to submit problem report');
+			}
+		})
+	</script>
+</body>
+</html>
